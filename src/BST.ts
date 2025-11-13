@@ -43,28 +43,64 @@ class Tree {
 
     if (this.root === null)
       this.root = new TreeNode(value);
-    else{
+    else {
       this.insertNode(this.root, value)
     }
   }
-  private insertNode(node: TreeNode | null, value:number):TreeNode{
-    if(node == null){
+  private insertNode(node: TreeNode | null, value: number): TreeNode {
+    if (node == null) {
       return new TreeNode(value)
     }
-
-    if(value < node.data){
+    if (value < node.data) {
       node.left = this.insertNode(node.left, value)
     }
-    else if(value > node.data){
+    else if (value > node.data) {
       node.right = this.insertNode(node.right, value)
     }
 
     return node
+  }
+  deleteItem(value: number) {
+    if (this.root === null)
+      return
+    else {
+      this.root = this.deleteNode(this.root, value)
+
+
+    }
 
   }
+  private deleteNode(node: TreeNode | null, value: number): TreeNode | null {
+    if (node == null) {
+      return null
+    }
+    if (node.data > value) {
+      node.left = this.deleteNode(node.left, value);
+    }
+    else if (node.data < value)
+      node.right = this.deleteNode(node.right, value)
 
+    else {
+      if (node.left == null) {
+        return node.right
+      }
+      else if (node.right == null) {
+        return node.left
+      }
 
-
+      const succ = this.getSuccesor(node);
+      node.data = succ.data
+      node.right = this.deleteNode(node.right, succ.data)
+    
+    }
+    return node
+  }
+  private getSuccesor(curr: TreeNode): TreeNode {
+    let node = curr.right!;
+    while ( node.left !== null)
+      node = node.left;
+    return node;
+  }
 
 }
 
