@@ -1,0 +1,40 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Compilación TypeScript
+dist/
+build/
+out/
+lib/
+*.tsbuildinfo
+
+# Archivos temporales
+.tmp/
+temp/
+*.tmp
+
+# Sistemas operativos
+.DS_Store
+Thumbs.db
+
+# IDEs / Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+coverage/
+*.lcov
+
+# Ambiente
+.env
+.env.local
+.env.*.local
