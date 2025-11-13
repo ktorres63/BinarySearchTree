@@ -91,19 +91,37 @@ class Tree {
       const succ = this.getSuccesor(node);
       node.data = succ.data
       node.right = this.deleteNode(node.right, succ.data)
-    
+
     }
     return node
   }
   private getSuccesor(curr: TreeNode): TreeNode {
     let node = curr.right!;
-    while ( node.left !== null)
+    while (node.left !== null)
       node = node.left;
     return node;
   }
 
-}
+  find(value: number): TreeNode | null {
+    if (this.root === null)
+      return null
 
+    return this.findNode(this.root, value)
+
+  }
+  private findNode(node: TreeNode, value: number): TreeNode | null {
+    if (node == null) {
+      return null
+    }
+    if (node.data > value) {
+      return this.findNode(node.left!, value);
+    }
+    else if (node.data < value)
+      return this.findNode(node.right!, value)
+
+    return node
+  }
+}
 
 
 
