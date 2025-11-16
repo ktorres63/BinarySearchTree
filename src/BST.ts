@@ -109,13 +109,13 @@ class Tree {
 
     return this.findNode(this.root, value);
   }
-  private findNode(node: TreeNode, value: number): TreeNode | null {
+  private findNode(node: TreeNode | null, value: number): TreeNode | null {
     if (node == null) {
       return null;
     }
     if (node.data > value) {
-      return this.findNode(node.left!, value);
-    } else if (node.data < value) return this.findNode(node.right!, value);
+      return this.findNode(node.left, value);
+    } else if (node.data < value) return this.findNode(node.right, value);
 
     return node;
   }
@@ -140,23 +140,103 @@ class Tree {
       }
     }
   }
+
   inOrderForEach(callback: (node: TreeNode) => void): void {
     if (!callback) {
       throw new Error("A callback function is required");
     }
     if (this.root === null) return;
-    this.inOrder(this.root,callback)
-
+    this.inOrder(this.root, callback);
   }
-  private inOrder(node:TreeNode | null,callback: (node: TreeNode) => void){
+  private inOrder(node: TreeNode | null, callback: (node: TreeNode) => void) {
     if (node === null) return;
-    this.inOrder(node.left,callback)
-    callback(node)
-    this.inOrder(node.right,callback)
+    this.inOrder(node.left, callback);
+    callback(node);
+    this.inOrder(node.right, callback);
+  }
+  preOrderForEach(callback: (node: TreeNode) => void): void {
+    if (!callback) {
+      throw new Error("A callback function is required");
+    }
+    if (this.root === null) return;
+    this.preOrder(this.root, callback);
+  }
+  private preOrder(node: TreeNode | null, callback: (node: TreeNode) => void) {
+    if (node === null) return;
+    callback(node);
+    this.preOrder(node.left, callback);
+    this.preOrder(node.right, callback);
+  }
+  postOrderForEach(callback: (node: TreeNode) => void): void {
+    if (!callback) {
+      throw new Error("A callback function is required");
+    }
+    if (this.root === null) return;
+    this.postOrder(this.root, callback);
+  }
+  private postOrder(node: TreeNode | null, callback: (node: TreeNode) => void) {
+    if (node === null) return;
+    this.postOrder(node.left, callback);
+    this.postOrder(node.right, callback);
+    callback(node);
+  }
+  height(value: number): number | null {
+    const currNode = this.find(value);
+    if (currNode == null) {
+      return null;
+    }
+    return this.recHeight(currNode);
+  }
+  private recHeight(node: TreeNode | null): number {
+    if (node == null) {
+      return -1;
+    }
+    const leftHeight = this.recHeight(node.left);
+    const rightHeight = this.recHeight(node.right);
+
+    return 1 + Math.max(leftHeight, rightHeight);
   }
 
-  
-}
+  depth(value: number): number | null {
+    if (this.root === null) return null;
+    const d = this.recDepth(this.root, value);
+    return d === -1 ? null : d;
+  }
+  private recDepth(node: TreeNode | null, value: number): number {
+    let leftDepth = 0;
+    let rightDepth = 0;
+    if (node == null) {
+      return -1;
+    }
+    if (node.data == value) {
+      return 0;
+    }
+    if (node.data > value) {
+      leftDepth = this.recDepth(node.left, value);
+      return leftDepth + 1;
+    } else if (node.data < value) {
+      rightDepth = this.recDepth(node.right, value);
+      return rightDepth + 1;
+    }
+    return -1;
+  }
+  isBalanced(): boolean {
+    if (this.root === null) return false;
 
+    return this.check(this.root).balanced;
+  }
+  check(node: TreeNode | null): { height: number; balanced: boolean } {
+    if (node == null) {
+      return { height: -1, balanced: true };
+    }
+    const left = this.check(node.left);
+    const right = this.check(node.right);
+
+    const balanced= Math.abs(left.height - right.height) <= 1 && left.balanced && right.balanced 
+    const height = 1+ Math.max(left.height,right.height)
+    return {height,balanced}
+  }
+
+}
 
 export { TreeNode, Tree };
