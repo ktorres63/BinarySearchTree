@@ -232,11 +232,22 @@ class Tree {
     const left = this.check(node.left);
     const right = this.check(node.right);
 
-    const balanced= Math.abs(left.height - right.height) <= 1 && left.balanced && right.balanced 
-    const height = 1+ Math.max(left.height,right.height)
-    return {height,balanced}
+    const balanced =
+      Math.abs(left.height - right.height) <= 1 &&
+      left.balanced &&
+      right.balanced;
+    const height = 1 + Math.max(left.height, right.height);
+    return { height, balanced };
   }
+  rebalance(): void {
+    const values: number[] = [];
+    this.inOrderForEach((node) => values.push(node.data));
 
+    const unique = [...new Set(values)];
+    unique.sort((a, b) => a - b);
+
+    this.root = this.buildTree(unique);
+  }
 }
 
 export { TreeNode, Tree };

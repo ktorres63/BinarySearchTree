@@ -1,12 +1,19 @@
 import { Tree } from "./BST.ts"; 
 
-const tree = new Tree([10, 7, 15,4,3,2,20,43]);
+const tree = new Tree([]);
+tree.insert(1);
+tree.insert(2);
+tree.insert(3);
+tree.insert(4);
+tree.insert(5);
+tree.insert(6);
+tree.insert(7);
 
 tree.prettyPrint();
 
 
 console.log("---------------------------------------");
 
+tree.rebalance();
 
-console.log(tree.find(7));  // devuelve el nodo con data = 7
-console.log(tree.find(20)); // null
+tree.prettyPrint();
